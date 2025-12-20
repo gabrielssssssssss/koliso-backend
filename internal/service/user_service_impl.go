@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/gabrielssssssssss/koliso-backend.git/helper"
 	"github.com/gabrielssssssssss/koliso-backend.git/internal/entity"
 	"github.com/gabrielssssssssss/koliso-backend.git/internal/model"
 	"github.com/gabrielssssssssss/koliso-backend.git/internal/validation"
@@ -32,10 +33,15 @@ func (user userServiceimpl) Register(request *model.RegisterUserPayload) (*model
 		return nil, err
 	}
 
+	token, err := helper.GenerateJwtToken(userEntity[0].Uuid, userEntity[0].Email, userEntity[0].Role)
+	if err != nil {
+		return nil, err
+	}
+
 	response := model.RegisterUserResponse{
 		Uuid:  userEntity[0].Uuid,
 		Role:  userEntity[0].Role,
-		Token: "",
+		Token: token,
 	}
 	return &response, nil
 }
