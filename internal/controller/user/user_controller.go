@@ -27,9 +27,9 @@ func (controller *UserController) Register(c *gin.Context) {
 	response, err := controller.UserService.Register(&request)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"code": 500,
-			"msg":  "Internal server error",
-			"data": response,
+			"code": 400,
+			"msg":  "Bad request",
+			"data": err.Error(),
 		})
 		return
 	}

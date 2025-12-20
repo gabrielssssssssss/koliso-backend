@@ -6,7 +6,7 @@ import (
 )
 
 type UserRepository interface {
-	Register(users *entity.UserEntity) error
+	Register(users *entity.UserEntity) ([]entity.UserEntity, error)
 }
 
 type userImplementation struct {

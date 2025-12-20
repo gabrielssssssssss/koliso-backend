@@ -1,18 +1,19 @@
 package repository
 
 import (
-	"fmt"
+	"encoding/json"
 
 	"github.com/gabrielssssssssss/koliso-backend.git/config"
 	"github.com/gabrielssssssssss/koliso-backend.git/internal/entity"
 )
 
-func (user *userImplementation) Register(users *entity.UserEntity) error {
+func (user *userImplementation) Register(users *entity.UserEntity) ([]entity.UserEntity, error) {
 	_, cancel := config.NewSupabaseContext()
 	defer cancel()
 
-	fmt.Println(users)
-	data, _, err := user.db.From("Users").Insert(map[string]interface{}{
+	var Results []entity.UserEntity
+
+	response, _, err := user.db.From("Users").Insert(map[string]interface{}{
 		"first_name":          users.FirstName,
 		"last_name":           users.LastName,
 		"email":               users.Email,
@@ -21,7 +22,13 @@ func (user *userImplementation) Register(users *entity.UserEntity) error {
 		"profile_picture_url": users.ProfilPicture,
 	}, false, "", "representation", "").Execute()
 
-	fmt.Println(err)
-	fmt.Println(data)
-	return nil
+	if err != nil {
+		return Results, err
+	}
+
+	err = json.Unmarshal(response, &Results)
+	if err != nil {
+		return Results, err
+	}
+	return Results, nil
 }
