@@ -9,7 +9,7 @@ import (
 )
 
 func Controller() {
-	databaseSupabase := config.NewSupabaseClient()
+	databaseSupabase := config.NewSupabaseDatabase()
 
 	userRepository := repository.NewUserRepository(databaseSupabase)
 	userService := service.NewUserService(&userRepository)

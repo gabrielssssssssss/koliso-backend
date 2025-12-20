@@ -10,11 +10,11 @@ type UserRepository interface {
 }
 
 type userImplementation struct {
-	supabase *supabase.Client
+	db *supabase.Client
 }
 
 func NewUserRepository(client *supabase.Client) UserRepository {
 	return &userImplementation{
-		supabase: client,
+		db: client,
 	}
 }
